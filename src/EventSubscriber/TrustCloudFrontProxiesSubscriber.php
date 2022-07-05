@@ -37,7 +37,11 @@ class TrustCloudFrontProxiesSubscriber implements EventSubscriberInterface
 
     public function trustProxies(RequestEvent $event)
     {
-        if (!$event->isMainRequest()) {
+        if (method_exists($event, 'isMasterRequest') && !$event->isMasterRequest()) {
+            return;
+        }
+
+        if (method_exists($event, 'isMainRequest') && !$event->isMainRequest()) {
             return;
         }
 
